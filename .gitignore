@@ -8,7 +8,8 @@ src-tauri/gen/
 src-tauri/wake-helper/JarvisWakeListener.app/
 runtime/*
 !runtime/.gitkeep
-src-tauri/voice-runtime/
+src-tauri/voice-runtime/*
+!src-tauri/voice-runtime/.gitkeep
 backup/
 backups/
 tmp/
