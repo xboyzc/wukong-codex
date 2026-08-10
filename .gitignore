@@ -19,3 +19,5 @@ tmp/
 .env.*
 !.env.example
 *.dmg
+*.safetensors
+skills/**/model-cache/

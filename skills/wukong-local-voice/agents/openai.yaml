@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wukong Local Voice"
+  short_description: "Check and download the local Wukong voice model"
+  default_prompt: "Use $wukong-local-voice to check and prepare the local Wukong Qwen3-TTS model."

@@ -41,6 +41,16 @@ Windows 需要安装“中文（简体）”的语音识别语言包，否则程
 - 这是公开仓库：包内的参考声音片段会被任何人下载。不接受这一点时，请删除参考 WAV 并改成私有仓库。
 - 模型下载后，声音生成在本机执行。Codex 问答仍需要 Codex 服务和你自己的登录/用量权限。
 
+## Codex Skill：自动准备本地模型
+
+仓库提供 [`wukong-local-voice`](skills/wukong-local-voice/SKILL.md) Skill，但不包含模型权重。安装 Skill 后第一次调用 `$wukong-local-voice`，它会先提示下载大小和联网要求，然后自动下载当前系统对应的 Qwen3-TTS 模型；以后直接复用本机缓存。
+
+Skill 本身没有安装后自动执行代码的权限，因此提醒与自动下载发生在第一次调用时，而不是复制文件的瞬间。模型文件已被 `.gitignore` 排除，不会误传到 GitHub。
+
+在 Codex 中可以直接说：
+
+> 从 `https://github.com/xboyzc/wukong-codex/tree/main/skills/wukong-local-voice` 安装这个 Skill。
+
 ## 公开构建的签名说明
 
 自动构建产物目前没有 Apple Developer ID 和 Windows 代码签名证书。系统可能显示“未知开发者”或 SmartScreen 警告。只应从本仓库 Releases 下载，并在确认发布者为 `xboyzc` 后手动允许打开。

@@ -28,6 +28,14 @@ macOS uses MLX + Qwen3-TTS. Windows uses PyTorch + Qwen3-TTS. Synthesis does not
 
 This is a public repository. Its short reference WAV is the repository owner's explicitly authorized personal recording and can be downloaded by anyone. See [assets/NOTICE.md](assets/NOTICE.md) before redistributing the media assets.
 
+## Codex Skill: automatic local-model setup
+
+The repository includes the [`wukong-local-voice`](skills/wukong-local-voice/SKILL.md) Skill without model weights. On its first invocation, `$wukong-local-voice` reports the platform-specific download size and network requirement, then downloads the correct Qwen3-TTS model automatically. Later invocations reuse the local Hugging Face cache.
+
+Copying a Skill cannot execute a post-install hook, so the reminder and download occur on first invocation rather than at file-copy time. Model weights are excluded by `.gitignore` and must never be committed to GitHub.
+
+In Codex, ask: `Install the Skill from https://github.com/xboyzc/wukong-codex/tree/main/skills/wukong-local-voice`.
+
 ## Development
 
 ```bash

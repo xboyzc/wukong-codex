@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
+import { mkdtempSync, rmSync } from "node:fs";
 import { readFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 
 const frontend = await readFile(new URL("../src/main.ts", import.meta.url), "utf8");
 const stylesheet = await readFile(new URL("../src/style.css", import.meta.url), "utf8");
@@ -59,6 +64,16 @@ const voiceReference = await readFile(
 const voiceReferenceText = await readFile(
   new URL("../src-tauri/voice-worker/wukong-20260809-reference-transcript.txt", import.meta.url),
   "utf8",
+);
+const localVoiceSkill = await readFile(
+  new URL("../skills/wukong-local-voice/SKILL.md", import.meta.url),
+  "utf8",
+);
+const localVoiceModelScript = fileURLToPath(
+  new URL(
+    "../skills/wukong-local-voice/scripts/ensure_model.py",
+    import.meta.url,
+  ),
 );
 
 test("Codex text is spoken through the authorized local 8月9日 voice clone", () => {
@@ -136,6 +151,40 @@ test("Windows has native wake, playback, Codex discovery, and local Qwen voice",
   assert.match(windowsWakeHelper, /DictationGrammar/);
   assert.match(windowsConfig, /"targets": \["nsis"\]/);
   assert.match(windowsConfig, /voice-runtime\//);
+});
+
+test("the downloadable Skill reminds once and prepares models outside GitHub", () => {
+  assert.match(localVoiceSkill, /第一次调用|first invocation/i);
+  assert.match(localVoiceSkill, /--download/);
+  assert.match(localVoiceSkill, /never add them to Git|Never commit/i);
+  assert.match(localVoiceSkill, /1\.71 GB/);
+  assert.match(localVoiceSkill, /2\.52 GB/);
+
+  const python = process.platform === "win32" ? "python" : "python3";
+  const cache = mkdtempSync(join(tmpdir(), "wukong-skill-model-check-"));
+  try {
+    for (const platform of ["macos", "windows"]) {
+      const output = execFileSync(
+        python,
+        [
+          localVoiceModelScript,
+          "--check",
+          "--platform",
+          platform,
+          "--cache-dir",
+          cache,
+        ],
+        { encoding: "utf8" },
+      );
+      const status = JSON.parse(output);
+      assert.equal(status.platform, platform);
+      assert.equal(status.ready, false);
+      assert.equal(status.downloadRequired, true);
+      assert.match(status.modelId, /Qwen3-TTS/);
+    }
+  } finally {
+    rmSync(cache, { recursive: true, force: true });
+  }
 });
 
 test("local cloned speech keeps one stable voice per assistant reply", () => {

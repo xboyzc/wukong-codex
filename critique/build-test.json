@@ -1,12 +1,13 @@
 {
   "build": "passing",
   "tests": "passing",
-  "durationMs": 1446000,
+  "durationMs": 1870,
   "commandsRun": [
+    "skill-creator quick_validate.py skills/wukong-local-voice",
+    "python3 skills/wukong-local-voice/scripts/ensure_model.py --check",
+    "python3 skills/wukong-local-voice/scripts/ensure_model.py --download --dry-run --platform windows",
     "npm run check:macos",
-    "npm audit --audit-level=high",
-    "GitHub Actions CI run 31355423943 (macos-14 and windows-2022)",
-    "GitHub Actions release run 31355522272 (macOS Apple Silicon DMG and Windows x64 NSIS)"
+    "npm audit --audit-level=high"
   ],
   "failures": []
 }
