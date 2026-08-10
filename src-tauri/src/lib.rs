@@ -1963,16 +1963,16 @@ pub fn run() {
         })
         .build(tauri::generate_context!())
         .expect("error while running Wukong Codex");
-    application.run(|app, event| {
+    application.run(|_app, _event| {
         #[cfg(target_os = "macos")]
         if let tauri::RunEvent::Reopen {
             has_visible_windows,
             ..
-        } = event
+        } = _event
         {
-            raise_jarvis_window(app);
+            raise_jarvis_window(_app);
             if !has_visible_windows {
-                let _ = app.emit("jarvis-manual-summon", true);
+                let _ = _app.emit("jarvis-manual-summon", true);
             }
         }
     });
