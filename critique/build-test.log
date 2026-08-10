@@ -1,0 +1,48 @@
+Wukong Codex v0.2.2 build and release verification
+Date: 2026-08-10 Asia/Shanghai
+
+$ npm run check:macos
+> npm run wake:build && npm run check:core
+Wake listener sources unchanged; preserving its existing macOS permission identity.
+> node --test tests/wav.test.mjs
+tests 20
+pass 20
+fail 0
+duration_ms 46.771542
+> tsc && vite build
+11 modules transformed
+dist/index.html                  0.45 kB | gzip 0.30 kB
+dist/assets/index-DFq9M_3A.css 24.29 kB | gzip 6.15 kB
+dist/assets/index-yb9Ar-bg.js  51.02 kB | gzip 17.43 kB
+Vite build completed successfully.
+> cargo fmt --manifest-path src-tauri/Cargo.toml --check
+exit 0
+> cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets -- -D warnings
+Finished dev profile; exit 0.
+
+$ npm audit --audit-level=high
+found 0 vulnerabilities
+
+$ gh run view 31355423943 --repo xboyzc/wukong-codex
+CI conclusion: success
+macos-14: success
+windows-2022: success
+Windows PowerShell wake-listener parser: success
+
+$ gh run view 31355522272 --repo xboyzc/wukong-codex
+Build installers conclusion: success
+macOS Apple Silicon: success (9m38s)
+Windows x64: success (24m6s)
+
+$ gh release view v0.2.2 --repo xboyzc/wukong-codex
+Release: published, public, not a draft, not a prerelease
+Wukong.Codex_0.2.2_aarch64.dmg
+  size: 203120224 bytes
+  sha256: c975ec3ed1dff95c07af292f86e13bf6f3e3961cc4b5f0e5bc0ffe0a5ef1e182
+Wukong.Codex_0.2.2_x64-setup.exe
+  size: 296230399 bytes
+  sha256: 9e2170b7c38e3739fd147befb6cb9244bb0d11231f19e01b250d3a8e41a9a56d
+
+Known verification boundary:
+The Windows installer was compiled on a Windows Server 2022 x64 GitHub-hosted runner.
+A real Windows 11 microphone, Simplified Chinese speech pack, and speaker smoke test remains required.
