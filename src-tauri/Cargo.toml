@@ -1,6 +1,6 @@
 [package]
 name = "wukong-codex"
-version = "0.2.1"
+version = "0.2.2"
 description = "A Wukong holographic client for Codex with an authorized local cloned voice"
 authors = ["bigguan"]
 edition = "2021"

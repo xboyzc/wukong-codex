@@ -11,7 +11,7 @@ python_root=$(cd "$(dirname "$python_path")/.." && pwd)
 rm -rf "$runtime_dir"
 mkdir -p "$runtime_dir"
 rsync -a "$python_root/" "$runtime_dir/"
-export PIP_BREAK_SYSTEM_PACKAGES=1
+rm -f "$runtime_dir/lib/python3.12/EXTERNALLY-MANAGED"
 "$runtime_dir/bin/python3" -m ensurepip --upgrade
 "$runtime_dir/bin/python3" -m pip install --no-cache-dir --upgrade pip
 "$runtime_dir/bin/python3" -m pip install --no-cache-dir "mlx-audio==0.4.7"

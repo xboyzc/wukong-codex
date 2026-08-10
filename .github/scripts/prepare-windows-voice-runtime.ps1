@@ -14,7 +14,7 @@ New-Item -ItemType Directory -Force $runtimeDir | Out-Null
 Copy-Item -Recurse -Force (Join-Path $pythonRoot "*") $runtimeDir
 
 $runtimePython = Join-Path $runtimeDir "python.exe"
-$env:PIP_BREAK_SYSTEM_PACKAGES = "1"
+Remove-Item -Force (Join-Path $runtimeDir "Lib\EXTERNALLY-MANAGED") -ErrorAction SilentlyContinue
 & $runtimePython -m ensurepip --upgrade
 if ($LASTEXITCODE -ne 0) { throw "ensurepip failed with exit code $LASTEXITCODE" }
 & $runtimePython -m pip install --no-cache-dir --upgrade pip
