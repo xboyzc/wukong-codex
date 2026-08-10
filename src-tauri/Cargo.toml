@@ -15,12 +15,11 @@ tauri-build = { version = "2.6.3", features = [] }
 [dependencies]
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-tauri = { version = "2.11.5", features = ["protocol-asset"] }
+tauri = { version = "2.11.5", features = ["macos-private-api", "protocol-asset"] }
 tauri-plugin-autostart = "2.5.1"
 tauri-plugin-single-instance = "2.4.3"
 tokio = { version = "1", features = ["process", "io-util", "sync", "time", "rt-multi-thread", "macros"] }
 [target.'cfg(target_os = "macos")'.dependencies]
-tauri = { version = "2.11.5", features = ["macos-private-api", "protocol-asset"] }
 block2 = "0.6.2"
 objc2 = "0.6.4"
 objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std", "NSApplication"] }

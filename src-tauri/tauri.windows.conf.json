@@ -1,7 +1,4 @@
 {
-  "app": {
-    "macOSPrivateApi": false
-  },
   "bundle": {
     "targets": ["nsis"],
     "resources": [
