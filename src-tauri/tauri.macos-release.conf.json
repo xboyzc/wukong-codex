@@ -1,0 +1,13 @@
+{
+  "bundle": {
+    "targets": ["app", "dmg"],
+    "resources": [
+      "audio-filters/std.rnnn",
+      "voice-worker/voice_worker.py",
+      "voice-worker/wukong-20260809-reference.wav",
+      "voice-worker/wukong-20260809-reference-transcript.txt",
+      "wake-helper/JarvisWakeListener.app/",
+      "voice-runtime/"
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Wukong Codex does not capture video; this declaration allows WebKit to initialize its WebRTC media permission path.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Wukong Codex locally recognizes “黑悟空” and your questions; online Codex answers and your authorized online voice speaks.</string>
+  <key>NSSpeechRecognitionUsageDescription</key>
+  <string>Wukong Codex locally recognizes its wake phrase and spoken questions before sending text to online Codex.</string>
+</dict>
+</plist>

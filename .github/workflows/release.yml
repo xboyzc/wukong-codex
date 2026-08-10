@@ -1,0 +1,66 @@
+name: Build installers
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-14
+            platform: macOS-Apple-Silicon
+            config: src-tauri/tauri.macos-release.conf.json
+          - os: windows-2022
+            platform: Windows-x64
+            config: src-tauri/tauri.windows.conf.json
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          enable-cache: true
+          cache-python: true
+      - run: npm ci
+      - name: Build macOS wake listener
+        if: runner.os == 'macOS'
+        run: npm run wake:build
+      - name: Prepare macOS local voice runtime
+        if: runner.os == 'macOS'
+        run: bash .github/scripts/prepare-macos-voice-runtime.sh
+      - name: Prepare Windows local voice runtime
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: .github/scripts/prepare-windows-voice-runtime.ps1
+      - name: Verify bundled voice runtime
+        shell: bash
+        run: du -sh src-tauri/voice-runtime || true
+      - uses: tauri-apps/tauri-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: "Wukong Codex ${{ github.ref_name }}"
+          releaseBody: |
+            Wukong Codex for macOS Apple Silicon and Windows x64.
+
+            The first voice reply downloads the open-source Qwen voice model. Later replies reuse the local cache.
+            These community builds are unsigned; read the installation notes in README before opening them.
+          releaseDraft: false
+          prerelease: false
+          args: --config ${{ matrix.config }}

@@ -1,0 +1,26 @@
+{
+  "app": {
+    "macOSPrivateApi": false
+  },
+  "bundle": {
+    "targets": ["nsis"],
+    "resources": [
+      "audio-filters/std.rnnn",
+      "voice-worker/voice_worker_windows.py",
+      "voice-worker/wukong-20260809-reference.wav",
+      "voice-worker/wukong-20260809-reference-transcript.txt",
+      "wake-helper-windows/WukongWakeListener.ps1",
+      "voice-runtime/"
+    ],
+    "windows": {
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper",
+        "silent": true
+      },
+      "nsis": {
+        "installMode": "currentUser",
+        "installerIcon": "icons/icon.ico"
+      }
+    }
+  }
+}
