@@ -39,17 +39,17 @@ try {
         exit 3
     }
 
-    $recognizer = New-Object System.Speech.Recognition.SpeechRecognitionEngine($recognizerInfo)
+    $recognizer = [System.Speech.Recognition.SpeechRecognitionEngine]::new($recognizerInfo)
     if ($Conversation) {
-        $recognizer.LoadGrammar((New-Object System.Speech.Recognition.DictationGrammar))
+        $recognizer.LoadGrammar([System.Speech.Recognition.DictationGrammar]::new())
     }
     else {
-        $choices = New-Object System.Speech.Recognition.Choices
-        $choices.Add(@("嗨悟空", "嘿悟空", "黑悟空"))
-        $builder = New-Object System.Speech.Recognition.GrammarBuilder
+        $choices = [System.Speech.Recognition.Choices]::new()
+        $choices.Add([string[]]@("嗨悟空", "嘿悟空", "黑悟空"))
+        $builder = [System.Speech.Recognition.GrammarBuilder]::new()
         $builder.Culture = $recognizerInfo.Culture
         $builder.Append($choices)
-        $recognizer.LoadGrammar((New-Object System.Speech.Recognition.Grammar($builder)))
+        $recognizer.LoadGrammar([System.Speech.Recognition.Grammar]::new($builder))
     }
     $recognizer.SetInputToDefaultAudioDevice()
 
